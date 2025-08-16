@@ -53,7 +53,16 @@ function renderTable() {
     const staffVal = document.getElementById('staffFilter').value;
     const tbody = document.querySelector('#shiftTable tbody');
     tbody.innerHTML = '';
+
+    // 今日の日付（YYYY-MM-DD形式）
+    const today = new Date(2025, 7, 16); // 月は0始まりなので8月は7
+
     allData.forEach(row => {
+        // 日付が今日より前なら非表示
+        if (row.Date) {
+            const rowDate = new Date(row.Date);
+            if (rowDate < today) return;
+        }
         // フィルタ処理
         if(dateVal && row.Date !== dateVal) return;
         if(staffVal && !row.Staff.split(',').map(n => n.trim()).includes(staffVal)) return;
