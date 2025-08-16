@@ -55,6 +55,13 @@ function getJapaneseWeekday(dateStr) {
     return week[d.getDay()];
 }
 
+function formatDateWithoutYear(dateStr) {
+    // "2025-08-27" → "08/27"
+    const m = dateStr.match(/^\d{4}-(\d{2})-(\d{2})$/);
+    if (!m) return dateStr;
+    return `${m[1]}/${m[2]}`;
+}
+
 function renderTable() {
     const dateVal = document.getElementById('dateFilter').value;
     const staffVal = document.getElementById('staffFilter').value;
@@ -72,7 +79,7 @@ function renderTable() {
         if(staffVal && !row.Staff.split(',').map(n => n.trim()).includes(staffVal)) return;
         const tr = document.createElement('tr');
         tr.innerHTML = `
-            <td>${row.Date}（${getJapaneseWeekday(row.Date)}）</td>
+            <td>${formatDateWithoutYear(row.Date)}（${getJapaneseWeekday(row.Date)}）</td>
             <td>${row.Slot}</td>
             <td>${row.Staff}</td>
             <td>${row.Notes || ''}</td>
