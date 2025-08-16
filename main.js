@@ -56,10 +56,12 @@ function getJapaneseWeekday(dateStr) {
 }
 
 function formatDateWithoutYear(dateStr) {
-    // "2025-08-27" → "08/27"
-    const m = dateStr.match(/^\d{4}-(\d{2})-(\d{2})$/);
+    // "2025-08-27" や "2025/8/7" や "2025/08/07" → "08/07"
+    let m = dateStr.match(/^\d{4}[-\/](\d{1,2})[-\/](\d{1,2})$/);
     if (!m) return dateStr;
-    return `${m[1]}/${m[2]}`;
+    const mm = m[1].padStart(2, '0');
+    const dd = m[2].padStart(2, '0');
+    return `${mm}/${dd}`;
 }
 
 function renderTable() {
