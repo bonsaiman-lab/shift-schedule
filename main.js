@@ -48,6 +48,13 @@ function renderFilters() {
         Array.from(staffSet).sort().map(staff => `<option value="${staff}">${staff}</option>`).join('');
 }
 
+function getJapaneseWeekday(dateStr) {
+    const week = ["日", "月", "火", "水", "木", "金", "土"];
+    const d = new Date(dateStr);
+    if (isNaN(d)) return "";
+    return week[d.getDay()];
+}
+
 function renderTable() {
     const dateVal = document.getElementById('dateFilter').value;
     const staffVal = document.getElementById('staffFilter').value;
@@ -65,7 +72,7 @@ function renderTable() {
         if(staffVal && !row.Staff.split(',').map(n => n.trim()).includes(staffVal)) return;
         const tr = document.createElement('tr');
         tr.innerHTML = `
-            <td>${row.Date}</td>
+            <td>${row.Date}（${getJapaneseWeekday(row.Date)}）</td>
             <td>${row.Slot}</td>
             <td>${row.Staff}</td>
             <td>${row.Notes || ''}</td>
