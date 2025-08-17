@@ -71,7 +71,7 @@ function renderTable() {
     tbody.innerHTML = '';
 
     // 今日の日付（YYYY-MM-DD形式）
-    const today = '2025-08-16';
+    const today = new Date().toISOString().slice(0, 10);
 
     allData.forEach(row => {
         // 日付が今日より前なら非表示（文字列比較）
