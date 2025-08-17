@@ -64,18 +64,26 @@ function formatDateWithoutYear(dateStr) {
     return `${mm}/${dd}`;
 }
 
+function toDateObj(dateStr) {
+    // "2025/08/17" or "2025-08-17" → Dateオブジェクト
+    return new Date(dateStr.replace(/-/g, '/'));
+}
+
 function renderTable() {
     const dateVal = document.getElementById('dateFilter').value;
     const staffVal = document.getElementById('staffFilter').value;
     const tbody = document.querySelector('#shiftTable tbody');
     tbody.innerHTML = '';
 
-    // 今日の日付（YYYY-MM-DD形式）
-    const today = new Date().toISOString().slice(0, 10);
+    // 今日の日付（00:00:00で比較）
+    const today = new Date();
+    today.setHours(0,0,0,0);
 
     allData.forEach(row => {
-        // 日付が今日より前なら非表示（文字列比較）
-        if (row.Date && row.Date < today) return;
+        if (row.Date) {
+            const rowDate = toDateObj(row.Date);
+            if (rowDate < today) return; // 過去日は非表示
+        }
         // フィルタ処理
         if(dateVal && row.Date !== dateVal) return;
         if(staffVal && !row.Staff.split(',').map(n => n.trim()).includes(staffVal)) return;
