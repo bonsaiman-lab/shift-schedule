@@ -101,5 +101,41 @@ function renderTable() {
 document.getElementById('dateFilter').addEventListener('change', renderTable);
 document.getElementById('staffFilter').addEventListener('change', renderTable);
 
+document.getElementById('todayBtn').addEventListener('click', () => {
+    const today = new Date();
+    today.setHours(0,0,0,0);
+    const yyyy = today.getFullYear();
+    const mm = ('0' + (today.getMonth() + 1)).slice(-2);
+    const dd = ('0' + today.getDate()).slice(-2);
+    const todayStr = `${yyyy}/${mm}/${dd}`;
+    setDateFilterTo(todayStr);
+});
+document.getElementById('tomorrowBtn').addEventListener('click', () => {
+    const today = new Date();
+    today.setHours(0,0,0,0);
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+    const yyyy = tomorrow.getFullYear();
+    const mm = ('0' + (tomorrow.getMonth() + 1)).slice(-2);
+    const dd = ('0' + tomorrow.getDate()).slice(-2);
+    const tomorrowStr = `${yyyy}/${mm}/${dd}`;
+    setDateFilterTo(tomorrowStr);
+});
+
+function setDateFilterTo(dateStr) {
+    const dateFilter = document.getElementById('dateFilter');
+    let found = false;
+    for (const option of dateFilter.options) {
+        if (option.value === dateStr) {
+            dateFilter.value = dateStr;
+            found = true;
+            break;
+        }
+    }
+    if (!found) {
+        dateFilter.value = '';
+    }
+    renderTable();
+}
 // 初期化
 fetchAndRender();
