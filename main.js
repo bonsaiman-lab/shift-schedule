@@ -65,8 +65,10 @@ function formatDateWithoutYear(dateStr) {
 }
 
 function toDateObj(dateStr) {
-    // "2025/08/17" or "2025-08-17" → Dateオブジェクト
-    return new Date(dateStr.replace(/-/g, '/'));
+    // すでにDateオブジェクトならそのまま返す
+    if (dateStr instanceof Date) return dateStr;
+    // "YYYY/MM/DD" or "YYYY-MM-DD" or 英語Date文字列
+    return new Date(dateStr);
 }
 
 function renderTable() {
