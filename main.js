@@ -1,5 +1,5 @@
 // GoogleスプレッドシートのCSV公開URL
-const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSIPeA6JsXKM9vSkm6XufICqsQKUjWlfOn17GrbYMPkoou8SPCMzm71V8OsDal6z3xod7c4j1R6ZHTV/pub?gid=0&single=true&output=csv';
+const CSV_URL = 'https://script.google.com/macros/s/AKfycbw6wyrua7_Pnrr9cBE9Jetjxze9xCwJ7hoHImJPLYjdu8CFlYifk8yg7uWNmq-eKlUCmg/exec';
 
 let allData = [];
 
