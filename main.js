@@ -41,10 +41,12 @@ function renderFilters() {
     });
     const dateFilter = document.getElementById('dateFilter');
     dateFilter.innerHTML = '<option value="">すべて</option>' +
-        Array.from(dateSet).sort().map(date => {
-            const display = `${formatDateWithoutYear(date)}（${getJapaneseWeekday(date)}）`;
-            return `<option value="${date}">${display}</option>`;
-        }).join('');
+        Array.from(dateSet)
+            .sort((a, b) => toDateObj(a) - toDateObj(b)) // 日付の昇順でソート
+            .map(date => {
+                const display = `${formatDateWithoutYear(date)}（${getJapaneseWeekday(date)}）`;
+                return `<option value="${date}">${display}</option>`;
+            }).join('');
     // スタッフ名フィルタ
     let staffList = [];
     allData.forEach(row => {
