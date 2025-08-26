@@ -71,6 +71,19 @@ function toDateObj(dateStr) {
     return new Date(dateStr);
 }
 
+function formatDateWithoutYear(dateStr) {
+    const d = toDateObj(dateStr);
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    return `${mm}/${dd}`;
+}
+
+function getJapaneseWeekday(dateStr) {
+    const week = ['日', '月', '火', '水', '木', '金', '土'];
+    const d = toDateObj(dateStr);
+    return week[d.getDay()];
+}
+
 function renderTable() {
     const dateVal = document.getElementById('dateFilter').value;
     const staffVal = document.getElementById('staffFilter').value;
@@ -90,8 +103,10 @@ function renderTable() {
         if(dateVal && row.Date !== dateVal) return;
         if(staffVal && !row.Staff.split(',').map(n => n.trim()).includes(staffVal)) return;
         const tr = document.createElement('tr');
+        // 日付を日本式に変換して表示
+        const displayDate = `${formatDateWithoutYear(row.Date)}（${getJapaneseWeekday(row.Date)}）`;
         tr.innerHTML = `
-            <td>${formatDateWithoutYear(row.Date)}（${getJapaneseWeekday(row.Date)}）</td>
+            <td>${displayDate}</td>
             <td>${row.Slot}</td>
             <td>${row.Staff}</td>
             <td>${row.Notes || ''}</td>
