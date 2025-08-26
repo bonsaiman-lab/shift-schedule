@@ -172,12 +172,6 @@ document.getElementById('tomorrowBtn').addEventListener('click', () => {
         renderTable();
     }
 });
-    const yyyy = tomorrow.getFullYear();
-    const mm = ('0' + (tomorrow.getMonth() + 1)).slice(-2);
-    const dd = ('0' + tomorrow.getDate()).slice(-2);
-    const tomorrowStr = `${yyyy}/${mm}/${dd}`;
-    setDateFilterTo(tomorrowStr);
-});
 
 function setDateFilterTo(dateStr) {
     const dateFilter = document.getElementById('dateFilter');
