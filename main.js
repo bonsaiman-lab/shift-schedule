@@ -157,17 +157,21 @@ document.getElementById('tomorrowBtn').addEventListener('click', () => {
         renderTable();
     }
 });
-    const yyyy = today.getFullYear();
-    const mm = ('0' + (today.getMonth() + 1)).slice(-2);
-    const dd = ('0' + today.getDate()).slice(-2);
-    const todayStr = `${yyyy}/${mm}/${dd}`;
-    setDateFilterTo(todayStr);
-});
+
 document.getElementById('tomorrowBtn').addEventListener('click', () => {
-    const today = new Date();
-    today.setHours(0,0,0,0);
-    const tomorrow = new Date(today);
-    tomorrow.setDate(today.getDate() + 1);
+    const tomorrow = new Date();
+    tomorrow.setHours(0,0,0,0);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    // allDataから明日の日付（生値）を探してフィルタをセット
+    const found = allData.find(row => {
+        const d = toDateObj(row.Date);
+        return !isNaN(d) && d.getTime() === tomorrow.getTime();
+    });
+    if (found) {
+        document.getElementById('dateFilter').value = found.Date;
+        renderTable();
+    }
+});
     const yyyy = tomorrow.getFullYear();
     const mm = ('0' + (tomorrow.getMonth() + 1)).slice(-2);
     const dd = ('0' + tomorrow.getDate()).slice(-2);
