@@ -17,8 +17,8 @@ function parseCSV(csv) {
     const lines = csv.split(/\r?\n/).filter(line => line.trim() !== '');
     const headers = lines[0].split(',');
     return lines.slice(1).map(line => {
-        // カンマ区切り（ダブルクオート未対応の簡易版）
-        const cols = line.split(',');
+        // カンマ区切り＋各セルのダブルクオート除去
+        const cols = line.split(',').map(cell => cell.replace(/^"|"$/g, ''));
         return {
             Date: cols[0],
             Slot: cols[1],
