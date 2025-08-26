@@ -29,11 +29,22 @@ function parseCSV(csv) {
 }
 
 function renderFilters() {
-    // 日付フィルタ
-    const dateSet = new Set(allData.map(row => row.Date));
+    // 日付フィルタ（日本式表示、過去日除外）
+    const today = new Date();
+    today.setHours(0,0,0,0);
+    const dateSet = new Set();
+    allData.forEach(row => {
+        const d = toDateObj(row.Date);
+        if (!isNaN(d) && d >= today) {
+            dateSet.add(row.Date);
+        }
+    });
     const dateFilter = document.getElementById('dateFilter');
     dateFilter.innerHTML = '<option value="">すべて</option>' +
-        Array.from(dateSet).sort().map(date => `<option value="${date}">${date}</option>`).join('');
+        Array.from(dateSet).sort().map(date => {
+            const display = `${formatDateWithoutYear(date)}（${getJapaneseWeekday(date)}）`;
+            return `<option value="${date}">${display}</option>`;
+        }).join('');
     // スタッフ名フィルタ
     let staffList = [];
     allData.forEach(row => {
@@ -121,6 +132,31 @@ document.getElementById('staffFilter').addEventListener('change', renderTable);
 document.getElementById('todayBtn').addEventListener('click', () => {
     const today = new Date();
     today.setHours(0,0,0,0);
+    // allDataから今日の日付（生値）を探してフィルタをセット
+    const found = allData.find(row => {
+        const d = toDateObj(row.Date);
+        return !isNaN(d) && d.getTime() === today.getTime();
+    });
+    if (found) {
+        document.getElementById('dateFilter').value = found.Date;
+        renderTable();
+    }
+});
+
+document.getElementById('tomorrowBtn').addEventListener('click', () => {
+    const tomorrow = new Date();
+    tomorrow.setHours(0,0,0,0);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    // allDataから明日の日付（生値）を探してフィルタをセット
+    const found = allData.find(row => {
+        const d = toDateObj(row.Date);
+        return !isNaN(d) && d.getTime() === tomorrow.getTime();
+    });
+    if (found) {
+        document.getElementById('dateFilter').value = found.Date;
+        renderTable();
+    }
+});
     const yyyy = today.getFullYear();
     const mm = ('0' + (today.getMonth() + 1)).slice(-2);
     const dd = ('0' + today.getDate()).slice(-2);
